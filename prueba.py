@@ -1,12 +1,7 @@
 from sys import path # usamos para importar modulos propios
 path.append('C:\\Users\\EXT84085\\Desktop\\Python') # ruta del modulo que realizamos
 
-#from app import *
-#from flask import Flask, render_template
-import ipaddress
 from bs4 import BeautifulSoup
-import xmltodict, json
-
 
 """###########################################################################################################################
 Codigo del XML del cual se extrae la información
@@ -18,7 +13,7 @@ Codigo del XML del cual se extrae la información
 	</managedObject>
 """###########################################################################################################################
 
-filename = 'C:\\Users\\EXT84085\\Desktop\\Python\\server\\SCF.xml'  # Ruta del archivo
+filename = 'C:\\Users\\EXT84085\\Desktop\\Python\\server\\SCF2.xml'  # Ruta del archivo
 
 def eth(a):
 	tag = [i.getText() for  i in  a.find_all("p")] 
@@ -37,12 +32,18 @@ def imprimir(datos):
 	print(" IP de gestion     ", " "*3, datos['dir ip 6'])
 	print(" Sync Plane ToP    ", " "*3, datos['dir ip 7'])
 
+def extraccion(i):
+	info = [i.find("p",{"name":"localIpAddr"}).getText()]
+	info.append(i.find("p",{"name":"localIpPrefixLength"}).getText())
+	info = "/".join(map(str, info))
+	return info 
 
-def extraccion(dato):
-	#tag = {	i : i.getText() for  i in  dato.find_all("p")}	
-	ip = [i.getText() for  i in  dato.find_all("p")]	
-	del ip[0]
-	ip = "/".join(map(str, ip))
+def buscar(dato):
+	#tag = {	i : i.getText() for  i in  dato.find_all("p")}
+	#print(dato)	
+	ip = [extraccion(i) for i in dato.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4")]
+	#del ip[0]
+	#ip = "/".join(map(str, ip))
 	return ip
 
 def clasificar_ip(s):
@@ -69,54 +70,12 @@ def clasificar_ip(s):
 	return dic
 
 
-
-
 with open(filename,"r")	as page:
 	plan = BeautifulSoup(page,'xml',from_encoding='utf-8')			#
 
 mrbts = plan.find(class_="com.nokia.srbts:MRBTS").getText()  	# Busca dentro del SCF etiqueta "com.nokia.srbts:MRBTS" 
 print("Cell ID ", mrbts)  										# Imprimimos el Cell ID
-
-ip = [extraccion(dato) for dato in plan.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4")]
-print(ip)
-
-
-
-'''
-
-dic = clasificar_ip(ip)
-puerto = [eth(dato_1) for dato_1 in plan.find_all(class_="com.nokia.srbts.tnl:ETHLK")]
-print(puerto)
-#server(puerto)
-imprimir(dic)
-#server(dic)
-'''
-'''	
-with open(data, 'r') as myfile:
-    obj = xmltodict.parse(myfile.read())
-print(json.dumps(obj))
-
-a = open("scf.json","a")
-a.write(json.dumps(obj))
-a.close()
-'''
-
-
-	
-	
-
-#	print(ip)
-	#input("ingrese un valor para terminar")
-"""
-def extraccion(dato):
-	ip = {info : info.getText() for info in dato.find_all('p')}
-		#print (ip)
-#	obs_string =[extraccion(dato) for dato in soup.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4")] #  Busqueda de la dir IP
-
-
-	obs_string = {dato['distName'] : dato.getText() for dato in soup.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4")} #  Busqueda de la dir IP
-#	dic = { 'IP Addres' : dato.getText() for dato in obs_string }
-	contenido = soup.find('managedObject').getText()
-#	version = { 'version' :  obs_string['version']}
-#	ip = {}
-"""
+vlan = [i.getText() for i in plan.find_all("p",{"name":"vlanId"})]
+print(vlan)
+a = buscar(plan)
+print(a)

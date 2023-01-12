@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from bs4 import BeautifulSoup
-from django.conf import settings
+#from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.views import View  
-from remo.funcion import * 
-
-
-#filename = 'C:\\Users\\EXT84085\\Desktop\\Python\\server\\prueba\\SCF\\SCF.xml'  # Ruta del archivo
+ 
 
 class datos:
     def __init__(self, plan):
@@ -41,8 +38,8 @@ class datos:
 
     
     def extraccion(self,dato):
-        self.ip = [i.getText() for  i in  dato.find_all("p")]	
-        del self.ip[0]
+        self.ip = [dato.find("p",{"name":"localIpAddr"}).getText()]
+        self.ip.append(dato.find("p",{"name":"localIpPrefixLength"}).getText())
         self.ip = "/".join(map(str, self.ip))
         return self.ip
 
@@ -50,7 +47,6 @@ class datos:
         for dato in self.plan.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4"):
             ip = self.extraccion(dato)
             self.a.append(ip)
-        #self.a = [self.extraccion(dato) for dato in self.plan.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4")]
         self.a = self.clasificar_ip(self.a)
         return self.a
 
@@ -58,20 +54,49 @@ class datos:
         return self.plan.find(class_="com.nokia.srbts:MRBTS").getText()
     
     def eth(self,b):
-        #ethp=[]
         ethp = [i.getText() for  i in  b.find_all("p")]
         return ethp
     
+    def info_port(self,s):
+        info = {}
+        var = 0
+        for i in s:
+            for b in i:
+                if 'EIF1' in b:
+                    info[var] = 'EIF1'
+                    var+=1
+                if 'EIF2' in b:
+                    info[var] = 'EIF2'
+                    var+=1
+                if 'EIF3' in b:
+                    info[var] = 'EIF3'
+                    var+=1
+                if 'EIF4' in b:
+                    info[var] = 'EIF4'
+                    var+=1
+                if 'EIF5' in b:
+                    info[var] = 'EIF5'
+                    var+=1
+                if '100MBIT_FULL' in b:
+                    info[var] = '100MBIT_FULL'
+                    var+=1
+                if '1000MBIT_FULL' in b:
+                    info[var] = '1000MBIT_FULL'
+                    var+=1
+        return info 
+
     def puertos(self):
         puerto = [self.eth(i) for i in self.plan.find_all(class_="com.nokia.srbts.tnl:ETHLK")]
-        return puerto
- 
-        
+        dato_port = self.info_port(puerto)
+        return dato_port
+
+    def vlanid(self):
+        vlan = [i.getText() for i in self.plan.find_all("p",{"name":"vlanId"})]
+        return vlan
 
 
 class home(View):
 
-    template_name = 'remo/home.html'
     def get(self,request):
         return render(request, 'remo/home.html')
 
@@ -79,25 +104,30 @@ class home(View):
         myfile = request.FILES['myfile']
         myfile2 = request.FILES['myfile2']
         fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
+        filename = fs.save(myfile.name, myfile) 
         filename2 = fs.save(myfile2.name, myfile2)
+
         with open(filename,"r") as page:
             plan = BeautifulSoup(page,'xml',from_encoding='utf-8')
         with open(filename2,"r") as page:
             plan2 = BeautifulSoup(page,'xml',from_encoding='utf-8')        
+        
+        fs.delete(filename) 
+        fs.delete(filename2)
+        
         scf = datos(plan)           #instanciamos la clase datos
         cid = scf.mrbts()           #llamamos a la funcion mrbts
         ip = scf.buscar()
-        port = scf.puertos()           
+        port = scf.puertos()
+        vlan = scf.vlanid()           
 
         scf2 = datos(plan2)           #instanciamos la clase datos
         cid2 = scf2.mrbts()           #llamamos a la funcion mrbts
         ip2 = scf2.buscar()
+        port2 = scf2.puertos()
+        #vlan2 = scf2.vlanid()
 
-
-        fs.delete(filename)
-        fs.delete(filename2)
-        return render(request, "remo/home.html", {"cid":cid,"ip":ip, "port":port, "cid2":cid2,"ip2":ip2})
+        return render(request, "remo/home.html", {"cid":cid,"ip":ip, "port":port, "vlan":vlan, "cid2":cid2,"ip2":ip2, "port2":port2})
 
 
 
