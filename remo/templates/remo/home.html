@@ -43,9 +43,12 @@
             <tr><td></td><td>{{port.6}}</td><td>{{port2.6}}</td></tr>
             <tr><td></td><td>{{port.7}}</td><td>{{port2.7}}</td></tr>
             <tr><td></td><td>{{port.8}}</td><td>{{port2.8}}</td></tr>
-            <tr><td></td><td>{{port.9}}</td><td>{{port2.9}}</td></tr>            
+            <tr><td></td><td>{{port.9}}</td><td>{{port2.9}}</td></tr>
+            <tr><td>VLAN CONFIGURADAS:</td>
+            </td><td>{% for i in vlan %}{{i}} {% endfor %}
+            </td><td>{% for i in vlan2 %}{{i}} {% endfor %}</td></tr>            
     </table>
-    {{vlan}}
+    
 
 
 <!--

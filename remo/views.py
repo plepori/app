@@ -125,9 +125,9 @@ class home(View):
         cid2 = scf2.mrbts()           #llamamos a la funcion mrbts
         ip2 = scf2.buscar()
         port2 = scf2.puertos()
-        #vlan2 = scf2.vlanid()
+        vlan2 = scf2.vlanid()
 
-        return render(request, "remo/home.html", {"cid":cid,"ip":ip, "port":port, "vlan":vlan, "cid2":cid2,"ip2":ip2, "port2":port2})
+        return render(request, "remo/home.html", {"cid":cid,"ip":ip, "port":port, "vlan":vlan, "cid2":cid2,"ip2":ip2, "port2":port2, "vlan2":vlan2})
 
 
 

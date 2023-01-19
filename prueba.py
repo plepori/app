@@ -1,3 +1,5 @@
+# PRUEBA DE CODIGO
+
 from sys import path # usamos para importar modulos propios
 path.append('C:\\Users\\EXT84085\\Desktop\\Python') # ruta del modulo que realizamos
 
