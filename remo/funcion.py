@@ -9,73 +9,92 @@ CODIGO XML - INFORMACIÓN A BUSCAR
 	</managedObject>
 ###########################################################################################################################"""
 
-#def prueba(datos):
+class datos:
+    def __init__(self, plan):
+        ip = 0
+        self.plan = plan
+        self.ip = ip
+        a = []
+        self.a = a
+
+    def clasificar_ip(self,s):
+        var = 0
+        dic = {}
+        for i in range(len(s)):
+                var = s[i]
+                var = var[:6]
+                if var == '10.227':
+                    dic['CP_LTE'] = s[i]
+                elif var == '10.230':
+                    dic['UP_LTE'] = s[i]
+                elif var == '10.237':
+                    dic['CP_UMTS'] = s[i]
+                elif var == '10.236':
+                    dic['UP_UMTS'] = s[i]
+                elif var == '10.234':
+                    dic['CP_UP_GSM'] = s[i]
+                elif var == '10.231':
+                    dic['GESTION'] = s[i]
+                elif var == '10.232':
+                    dic['SYNC_TOP'] = s[i]
+                else: continue
+        return dic
 
     
+    def extraccion(self,dato):
+        self.ip = [dato.find("p",{"name":"localIpAddr"}).getText()]
+        self.ip.append(dato.find("p",{"name":"localIpPrefixLength"}).getText())
+        self.ip = "/".join(map(str, self.ip))
+        return self.ip
 
-'''
-#-INFORMACIÓN DE PUERTOS 
+    def buscar(self):
+        for dato in self.plan.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4"):
+            ip = self.extraccion(dato)
+            self.a.append(ip)
+        self.a = self.clasificar_ip(self.a)
+        return self.a
 
-def eth(a):
-	tag = [i.getText() for  i in  a.find_all("p")]
-	return(tag)
+    def mrbts(self):
+        return self.plan.find(class_="com.nokia.srbts:MRBTS").getText()
+    
+    def eth(self,b):
+        ethp = [i.getText() for  i in  b.find_all("p")]
+        return ethp
+    
+    def info_port(self,s):
+        info = {}
+        var = 0
+        for i in s:
+            for b in i:
+                if 'EIF1' in b:
+                    info[var] = 'EIF1'
+                    var+=1
+                if 'EIF2' in b:
+                    info[var] = 'EIF2'
+                    var+=1
+                if 'EIF3' in b:
+                    info[var] = 'EIF3'
+                    var+=1
+                if 'EIF4' in b:
+                    info[var] = 'EIF4'
+                    var+=1
+                if 'EIF5' in b:
+                    info[var] = 'EIF5'
+                    var+=1
+                if '100MBIT_FULL' in b:
+                    info[var] = '100MBIT_FULL'
+                    var+=1
+                if '1000MBIT_FULL' in b:
+                    info[var] = '1000MBIT_FULL'
+                    var+=1
+        return info 
 
-#-CLASIFICA LAS DIR IP
-def clasificar_ip(s):
-	var = 0
-	dic = {}
-	for i in range(len(s)):
-			var = s[i]
-			var = var[:6]
-			if var == '10.227':
-				dic['CP_LTE'] = s[i]
-			elif var == '10.230':
-				dic['UP_LTE'] = s[i]
-			elif var == '10.237':
-				dic['CP_UMTS'] = s[i]
-			elif var == '10.236':
-				dic['UP_UMTS'] = s[i]
-			elif var == '10.234':
-				dic['CPUP_GSM'] = s[i]
-			elif var == '10.231':
-				dic['Gestion'] = s[i]
-			elif var == '10.232':
-				dic['Sync'] = s[i]
-			else: break
-	return dic
+    def puertos(self):
+        puerto = [self.eth(i) for i in self.plan.find_all(class_="com.nokia.srbts.tnl:ETHLK")]
+        dato_port = self.info_port(puerto)
+        return dato_port
 
-	print(" Control Plane LTE ", " "*3, datos['dir ip 1'])
-	print(" User Plane LTE    ", " "*3, datos['dir ip 2'])
-	print(" Control Plane UMTS", " "*3, datos['dir ip 3'])
-	print(" User Plane UMTS   ", " "*3, datos['dir ip 4'])
-	print(" CP/UP GSM         ", " "*3, datos['dir ip 5'])
-	print(" IP de gestion     ", " "*3, datos['dir ip 6'])
-	print(" Sync Plane ToP    ", " "*3, datos['dir ip 7'])
+    def vlanid(self):
+        vlan = [i.getText() for i in self.plan.find_all("p",{"name":"vlanId"})]
+        return vlan
 
-#-EXTRACCION DE DIR IP Y LAS GUARDA EN UNA LISTA
-def extraccion(dato):
-	#tag = {	i : i.getText() for  i in  dato.find_all("p")}	
-	ip = [i.getText() for  i in  dato.find_all("p")]	
-	del ip[0]
-	ip = "/".join(map(str, ip))
-	return ip
-
-#-APP
-
-#### SOLUCIONAR EL TEMA DE CARGAR SCF ####
-
-with open(filename,"r")	as page:
-	plan = BeautifulSoup(page,'xml',from_encoding='utf-8')			#
-	mrbts = plan.find(class_="com.nokia.srbts:MRBTS").getText()  	# Busca dentro del SCF etiqueta "com.nokia.srbts:MRBTS" 
-	print("Cell ID ", mrbts)  										# Imprimimos el Cell ID
-
-	ip = [extraccion(dato) for dato in plan.find_all(class_="com.nokia.srbts.tnl:IPADDRESSV4")]
-	print(ip)
-
-	dic = clasificar_ip(ip)
-	print(dic)
-	
-	puerto = [eth(dato_1) for dato_1 in plan.find_all(class_="com.nokia.srbts.tnl:ETHLK")]
-	print(puerto)
-	server(mrbts,dic)
-'''

@@ -15,7 +15,7 @@ Codigo del XML del cual se extrae la información
 	</managedObject>
 """###########################################################################################################################
 
-filename = 'C:\\Users\\EXT84085\\Desktop\\Python\\server\\SCF2.xml'  # Ruta del archivo
+filename = 'C:\\Users\\EXT84085\\Desktop\\Python\\server\\SCF3.xml'  # Ruta del archivo
 
 def eth(a):
 	tag = [i.getText() for  i in  a.find_all("p")] 
@@ -81,3 +81,22 @@ vlan = [i.getText() for i in plan.find_all("p",{"name":"vlanId"})]
 print(vlan)
 a = buscar(plan)
 print(a)
+
+
+
+
+
+''' CODIGO DE PRUEBA PARA ELIMINAR ERROR BOTON
+def simple_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'remo/index.html', {
+            'uploaded_file_url': uploaded_file_url, 
+        })
+    return render(request, 'remo/index.html')
+
+
+'''

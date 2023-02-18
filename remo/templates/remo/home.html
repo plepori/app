@@ -1,52 +1,50 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <title>Document</title>
 </head>
 <body>
-    Información del Plan<br><br>
-
-    <form method="post" class="form-signin" enctype="multipart/form-data">
+    
+    <h3>
+    Información del Plan<br><br>  
+    
+    <form method="post"  enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="myfile">
         <input type="file" name="myfile2">
         <button type="submit">Subir Archivo</button> 
-    </form>
+    </form> <!--class="form-signin"-->
     <br>
-    
-    Direcciones IP configuradas:</br>
-    <table id="datatablesSimple" class="dataTable-table">
-        <thead>
-            <tr><th data-sortable="" style="width: 19.4175%;"><a href="#" class="dataTable-sorter">Direcciones IP</a></th>
-                <th data-sortable="" style="width: 27.6699%;"><a href="#" class="dataTable-sorter">{{cid}}</a></th>
-                <th data-sortable="" style="width: 15.8576%;"><a href="#" class="dataTable-sorter">{{cid2}}</a></th>
-        </thead>
-        
-        <tbody>
-            <tr><td>Control Plane LTE</td><td>{{ip.CP_LTE}}</td><td>{{ip2.CP_LTE}}</td></tr>
-            <tr><td>User Plane LTE</td><td>{{ip.UP_LTE}}</td><td>{{ip2.UP_LTE}}</td></tr>
-            <tr><td>Control Plane UMTS</td><td>{{ip.CP_UMTS}}</td><td>{{ip2.CP_UMTS}}</td></tr>
-            <tr><td>User Plane UMTS</td><td>{{ip.CP_UMTS}}</td><td>{{ip2.CP_UMTS}}</td></tr>
-            <tr><td>CP/UP GSM</td><td>{{ip.CP_UP_GSM}}</td><td>{{ip2.CP_UP_GSM}}</td></tr>
-            <tr><td>IP de gestion</td><td>{{ip.GESTION}}</td><td>{{ip2.GESTION}}</td></tr>
-            <tr><td>Sync Plane ToP</td><td>{{ip.SYNC_TOP}}</td><td>{{ip2.SYNC_TOP}}</td></tr>
-            <tr><td>PUERTOS CONFIGURADOS:</td>   
-            <tr><td></td><td>{{port.0}}</td><td>{{port2.0}}</td></tr>
-            <tr><td></td><td>{{port.1}}</td><td>{{port2.1}}</td></tr>
-            <tr><td></td><td>{{port.2}}</td><td>{{port2.2}}</td></tr>
-            <tr><td></td><td>{{port.3}}</td><td>{{port2.3}}</td></tr>
-            <tr><td></td><td>{{port.4}}</td><td>{{port2.4}}</td></tr>
-            <tr><td></td><td>{{port.5}}</td><td>{{port2.5}}</td></tr>
-            <tr><td></td><td>{{port.6}}</td><td>{{port2.6}}</td></tr>
-            <tr><td></td><td>{{port.7}}</td><td>{{port2.7}}</td></tr>
-            <tr><td></td><td>{{port.8}}</td><td>{{port2.8}}</td></tr>
-            <tr><td></td><td>{{port.9}}</td><td>{{port2.9}}</td></tr>
-            <tr><td>VLAN CONFIGURADAS:</td>
-            </td><td>{% for i in vlan %}{{i}} {% endfor %}
-            </td><td>{% for i in vlan2 %}{{i}} {% endfor %}</td></tr>            
+    </h3>
+    Direcciones IP configuradas:</br></br>
+    <table>
+        <tr><td>Direcciones IP</td><td>{{cid}}</td><td>{{cid2}}</td></tr>
+        <tr><td>Control Plane LTE</td><td>{{ip.CP_LTE}}</td><td>{{ip2.CP_LTE}}</td></tr>
+        <tr><td>User Plane LTE</td><td>{{ip.UP_LTE}}</td><td>{{ip2.UP_LTE}}</td></tr>
+        <tr><td>Control Plane UMTS</td><td>{{ip.CP_UMTS}}</td><td>{{ip2.CP_UMTS}}</td></tr>
+        <tr><td>User Plane UMTS</td><td>{{ip.CP_UMTS}}</td><td>{{ip2.CP_UMTS}}</td></tr>
+        <tr><td>CP/UP GSM</td><td>{{ip.CP_UP_GSM}}</td><td>{{ip2.CP_UP_GSM}}</td></tr>
+        <tr><td>IP de gestion</td><td>{{ip.GESTION}}</td><td>{{ip2.GESTION}}</td></tr>
+        <tr><td>Sync Plane ToP</td><td>{{ip.SYNC_TOP}}</td><td>{{ip2.SYNC_TOP}}</td></tr>
+        <tr><td>PUERTOS CONFIGURADOS:</td>   
+        <tr><td></td><td>{{port.0}}</td><td>{{port2.0}}</td></tr>
+        <tr><td></td><td>{{port.1}}</td><td>{{port2.1}}</td></tr>
+        <tr><td></td><td>{{port.2}}</td><td>{{port2.2}}</td></tr>
+        <tr><td></td><td>{{port.3}}</td><td>{{port2.3}}</td></tr>
+        <tr><td></td><td>{{port.4}}</td><td>{{port2.4}}</td></tr>
+        <tr><td></td><td>{{port.5}}</td><td>{{port2.5}}</td></tr>
+        <tr><td></td><td>{{port.6}}</td><td>{{port2.6}}</td></tr>
+        <tr><td></td><td>{{port.7}}</td><td>{{port2.7}}</td></tr>
+        <tr><td></td><td>{{port.8}}</td><td>{{port2.8}}</td></tr>
+        <tr><td></td><td>{{port.9}}</td><td>{{port2.9}}</td></tr>
+        <tr><td>VLAN CONFIGURADAS:</td>
+        </td><td>{% for i in vlan %}{{i}} {% endfor %}<br>
+        </td><td>{% for i in vlan2 %}{{i}} {% endfor %}<br></td></tr>            
     </table>
     
 
