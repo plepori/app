@@ -85,7 +85,6 @@ print(a)
 
 
 
-
 ''' CODIGO DE PRUEBA PARA ELIMINAR ERROR BOTON
 def simple_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:

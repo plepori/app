@@ -5,14 +5,20 @@
 }
 
 h3 { 
-    background-color: gray;
+    background-color: rgb(120, 120, 120);
     color: aliceblue;
+    align-items: center;
+    padding: 10px;
 }
 
 table { 
+    margin: 10px;
+    /*display: flex;*/
+    justify-content: center;
     align-items: center;
-    padding: 10px;
-    
+    border-collapse: separate;
+    border-spacing: 25px 5px;
+
 }
 
 

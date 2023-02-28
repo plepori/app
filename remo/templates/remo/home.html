@@ -11,19 +11,20 @@
 <body>
     
     <h3>
-    Información del Plan<br><br>  
+    INFORMACIÓN DEL PLAN<br><br>  
     
     <form method="post"  enctype="multipart/form-data">
         {% csrf_token %}
         <input type="file" name="myfile">
         <input type="file" name="myfile2">
-        <button type="submit">Subir Archivo</button> 
+        <button type="submit">Subir Archivo</button>
+        <button type="reset" >Limpiar</button>
     </form> <!--class="form-signin"-->
     <br>
     </h3>
-    Direcciones IP configuradas:</br></br>
+
     <table>
-        <tr><td>Direcciones IP</td><td>{{cid}}</td><td>{{cid2}}</td></tr>
+        <tr><td>DIRECCIONES IP</td><td>{{cid}}</td><td>{{cid2}}</td></tr>
         <tr><td>Control Plane LTE</td><td>{{ip.CP_LTE}}</td><td>{{ip2.CP_LTE}}</td></tr>
         <tr><td>User Plane LTE</td><td>{{ip.UP_LTE}}</td><td>{{ip2.UP_LTE}}</td></tr>
         <tr><td>Control Plane UMTS</td><td>{{ip.CP_UMTS}}</td><td>{{ip2.CP_UMTS}}</td></tr>

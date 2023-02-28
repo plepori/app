@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from bs4 import BeautifulSoup
 from django.core.files.storage import FileSystemStorage
 from django.views import View  
 from remo.funcion import *
- 
 
 class home(View):
 
@@ -11,12 +10,16 @@ class home(View):
         return render(request, 'remo/home.html')
 
     def post(sefl,request):
-        myfile = request.FILES['myfile']
-        myfile2 = request.FILES['myfile2']
+        try:
+            myfile = request.FILES['myfile']
+            myfile2 = request.FILES['myfile2']
+        except:
+            return render(request,"remo/home.html")        
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile) 
         filename2 = fs.save(myfile2.name, myfile2)
 
+        
         with open(filename,"r") as page:
             plan = BeautifulSoup(page,'xml',from_encoding='utf-8')
         with open(filename2,"r") as page:
