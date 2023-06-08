@@ -81,8 +81,9 @@ vlan = [i.getText() for i in plan.find_all("p",{"name":"vlanId"})]
 print(vlan)
 a = buscar(plan)
 print(a)
-
-
+ppp = plan.find("p",{"name":"l2QoSEnabled"}).getText()
+ppa = plan.find("p",{"name":"l2SwitchingEnabled"}).getText()
+print(ppp, ppa)
 
 
 ''' CODIGO DE PRUEBA PARA ELIMINAR ERROR BOTON
@@ -97,5 +98,8 @@ def simple_upload(request):
         })
     return render(request, 'remo/index.html')
 
+    
+    
+          <p name="l2QoSEnabled">false</p>
 
 '''

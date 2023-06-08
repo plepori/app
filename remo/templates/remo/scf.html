@@ -1,0 +1,23 @@
+{% extends 'remo/layouts/base.html' %}
+
+{% block content %}
+    
+<div form scf_2>
+    <form method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile3">
+    <button type="submit">Subir Archivo</button>
+</form> <!--class="form-signin"-->
+</div>
+
+<table>
+    <tr><td>Tecnología</td><td>{{conf}}</td></tr>
+    <tr><td>Banda</td><td>{{ip.CP_LTE}}</td></tr>
+    <tr><td>Tipo de Solución</td><td>{{ip.UP_LTE}}</td></tr>
+    <tr><td>Ran Sharing</td><td>{{ip.CP_UMTS}}</td></tr>
+    <tr><td>DSS</td><td>{{ip.CP_UMTS}}</td></tr>
+    <tr><td>Actual</td><td>{{ip.CP_UP_GSM}}</td></tr>
+    <tr><td>Futura</td><td>{{ip.GESTION}}</td></tr>
+</table>
+{% endblock %}
+

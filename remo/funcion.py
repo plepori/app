@@ -9,6 +9,8 @@ CODIGO XML - INFORMACIÓN A BUSCAR
 	</managedObject>
 ###########################################################################################################################"""
 
+
+
 class datos:
     def __init__(self, plan):
         ip = 0
@@ -97,4 +99,27 @@ class datos:
     def vlanid(self):
         vlan = [i.getText() for i in self.plan.find_all("p",{"name":"vlanId"})]
         return vlan
+    
+    def sw(self):
+        dic = {}
+        dic['qos'] = self.plan.find("p",{"name":"l2QoSEnabled"}).getText()
+        dic['l2'] = self.plan.find("p",{"name":"l2SwitchingEnabled"}).getText()
+        return dic
+
+
+class co:
+    def __init__(self, plan):
+
+#input_cols = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
+        df = pd.read_excel(filename, sheet_name = "Configuracion-Tareas-Materiales", header=2)
+        tit_col = df.columns.ravel()
+        conf = {}
+        a = 0
+
+        for i in tit_col:
+            if ((i == '2G') or (i == '2G.1') or (i == '3G') or (i == '3G.1') or (i == '4G') or 
+                (i == '4G.1') or (i == '4G.2') or (i == '4G.3') or (i == '4G.4') or (i == '4G.5')):
+                a = df[i].head(6).tolist()
+                conf[i]=a
 

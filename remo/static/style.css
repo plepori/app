@@ -4,6 +4,29 @@
     
 }
 
+nav {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    
+}
+
+nav ul {
+    
+    list-style-type: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+   
+}
+
+nav ul li {
+    padding: 20px;
+    text-size-adjust: 50px;
+}
+
 h3 { 
     background-color: rgb(120, 120, 120);
     color: aliceblue;
@@ -22,5 +45,9 @@ table {
 }
 
 
+div form {
+    width: 100vw;
+    height: 0px;
+    padding: 25px;
 
-
+}

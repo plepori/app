@@ -4,3 +4,7 @@ Información del proyecto:
 
 Se ingresa con localhost:8000/remo o 127.0.0.1:8000/remo
 
+instalar django, bs4 y lxml
+
+
+
